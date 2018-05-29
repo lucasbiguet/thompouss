@@ -1,21 +1,26 @@
 <template lang="pug">
   section(class="container")
-    .main
-      div(v-if="!timeout")
-        .countdown
-          countdown(ref="countdown" :time="20 * 1000", @countdownend="timeout = true")
-            template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
+    .main(v-if="gameWon == undefined")
+      .countdown
+        countdown(ref="countdown" :time="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false")
+          template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
-        form
-          label Entrez le mot de passe
-          input(v-model="password")
-          button(@click.prevent="validatePassword") Valider
-      div(v-else) Perdu !
+      form
+        h2 Mot de passe
+        input(v-model="password")
+        button(@click.prevent="validatePassword") Valider
+
+    .game-lost(v-if="gameWon == false")
+
+    .game-won(v-if="gameWon == true")
 
     .debug
-      span Mode administrateur:
-      button(@click.prevent="$refs.countdown.pause") pause
-      button(@click.prevent="$refs.countdown.start") start
+      label Mode administrateur:
+      button(@click.prevent="$refs.countdown.pause" v-if="counting") Pause
+      button(@click.prevent="$refs.countdown.start" v-else) Lancer
+      button(@click.prevent="reset") Réinitialiser jeu
+      button(@click.prevent="time = 2* 60 * 1000") 2 min
+      button(@click.prevent="time = 5 * 1000") 5 s
 
 </template>
 
@@ -26,21 +31,30 @@ export default {
   components: {
     Countdown
   },
+
   data () {
     return {
+      time: 30 * 60 * 1000,
       password: "",
-      timeout: false
+      gameWon: undefined,
+      counting: false
     }
   },
+
   methods: {
     validatePassword () {
       if (this.password == "missionhandicap") {
         this.$refs.countdown.pause()
-        alert("Vous avez déjoué l'attaque !")
-
+        this.gameWon = true
       } else {
         alert("Mauvais mot de passe")
       }
+    },
+
+    reset () {
+      this.time = 30 * 60 * 1000
+      this.gameWon = undefined
+      this.password = ""
     }
   }
 }
@@ -59,12 +73,25 @@ section {
   height: 100%;
 }
 
-.main {
-  margin-top: 100px;
-}
-
 .countdown {
   font-size: 8em;
   color: #d00;
+}
+
+.game-won {
+  background: url('~/assets/escapgame-ecran-gagne.jpg') no-repeat center center fixed;
+}
+
+.game-lost {
+  background: url('~/assets/escapgame-ecran-perdu.jpg') no-repeat center center fixed;
+}
+
+.game-won, .game-lost {
+  width: 100%;
+  height: 100vh;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 </style>
