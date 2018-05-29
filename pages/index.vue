@@ -1,19 +1,21 @@
 <template lang="pug">
   section(class="container")
-    div
+    .main
       div(v-if="!timeout")
-        countdown(ref="countdown" :time="20 * 1000", @countdownend="timeout = true")
-          template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
+        .countdown
+          countdown(ref="countdown" :time="20 * 1000", @countdownend="timeout = true")
+            template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
         form
           label Entrez le mot de passe
           input(v-model="password")
           button(@click.prevent="validatePassword") Valider
-      div(v-else) YOU LOOSE !
+      div(v-else) Perdu !
 
     .debug
-      button(@click.prevent="$refs.countdown.pause") DEBUG pause
-      button(@click.prevent="$refs.countdown.start") DEBUG start
+      span Mode administrateur:
+      button(@click.prevent="$refs.countdown.pause") pause
+      button(@click.prevent="$refs.countdown.start") start
 
 </template>
 
@@ -32,12 +34,12 @@ export default {
   },
   methods: {
     validatePassword () {
-      if (this.password == "yolo") {
+      if (this.password == "missionhandicap") {
         this.$refs.countdown.pause()
-        alert("bravo!")
+        alert("Vous avez déjoué l'attaque !")
 
       } else {
-        alert("raté !")
+        alert("Mauvais mot de passe")
       }
     }
   }
@@ -55,5 +57,14 @@ export default {
 section {
   text-align: center;
   height: 100%;
+}
+
+.main {
+  margin-top: 100px;
+}
+
+.countdown {
+  font-size: 8em;
+  color: #d00;
 }
 </style>
