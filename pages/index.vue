@@ -2,7 +2,7 @@
   section(class="container")
     .main(v-if="gameWon == undefined")
       .countdown
-        countdown(ref="countdown" :time="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false")
+        countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false")
           template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
       form
@@ -52,7 +52,10 @@ export default {
     },
 
     reset () {
-      this.time = 30 * 60 * 1000
+      this.time = undefined
+      this.$nextTick(() => {
+        this.time = 30 * 60 * 1000
+      })
       this.gameWon = undefined
       this.password = ""
     }
