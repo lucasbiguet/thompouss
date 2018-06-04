@@ -71,13 +71,21 @@ export default {
   background-color: grey;
 }
 
+.container {
+  height: 100%;
+}
+
+.main {
+  margin-top: 30vh;
+}
+
 section {
   text-align: center;
   height: 100%;
 }
 
 .countdown {
-  font-size: 8em;
+  font-size: 12em;
   color: #d00;
 }
 
