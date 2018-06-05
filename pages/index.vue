@@ -21,6 +21,7 @@
       button(@click.prevent="reset") Réinitialiser jeu
       button(@click.prevent="time = 2* 60 * 1000") 2 min
       button(@click.prevent="time = 5 * 1000") 5 s
+      button(@click.prevent="alarm.play()") Test alarme
 
 </template>
 
@@ -37,7 +38,8 @@ export default {
       time: 30 * 60 * 1000,
       password: "",
       gameWon: undefined,
-      counting: false
+      counting: false,
+      alarm: undefined //new Audio(require('~/assets/alarm.ogg'))
     }
   },
 

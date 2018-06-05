@@ -33,6 +33,11 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
+
+      config.module.rules.push({
+        test: /\.ogg$/,
+        loader: 'file-loader'
+      })
     }
   }
 }
