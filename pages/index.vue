@@ -7,8 +7,10 @@
 
       form
         h2 Mot de passe
-        input(v-model="password")
-        button(@click.prevent="validatePassword") Valider
+        input(v-model="password" :disabled="showError")
+        button(@click.prevent="validatePassword" :disabled="showError") Valider
+
+        .wrong-password(v-if="showError") Mauvais mot de passe
 
     .game-lost(v-if="gameWon == false")
 
@@ -40,7 +42,8 @@ export default {
       gameWon: undefined,
       counting: false,
       alarmFile: require('~/assets/alarm.ogg'),
-      alarm: undefined
+      alarm: undefined,
+      showError: false
     }
   },
 
@@ -50,7 +53,8 @@ export default {
         this.$refs.countdown.pause()
         this.gameWon = true
       } else {
-        alert("Mauvais mot de passe")
+        this.showError = true
+        setTimeout( () => { this.showError = false }, 3000)
       }
     },
 
@@ -99,6 +103,10 @@ section {
 
 .countdown {
   font-size: 12em;
+  color: #d00;
+}
+
+.wrong-password {
   color: #d00;
 }
 
