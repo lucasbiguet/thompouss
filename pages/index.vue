@@ -2,7 +2,7 @@
   section(class="container")
     .main(v-if="gameWon == undefined")
       .countdown
-        countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false")
+        countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false" @countdownprogress="countdownProgress")
           template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
       form
@@ -19,7 +19,7 @@
       button(@click.prevent="$refs.countdown.pause" v-if="counting") Pause
       button(@click.prevent="$refs.countdown.start" v-else) Lancer
       button(@click.prevent="reset") Réinitialiser jeu
-      button(@click.prevent="time = 2* 60 * 1000") 2 min
+      button(@click.prevent="time = 27.1 * 60 * 1000") 27 min 5 s
       button(@click.prevent="time = 5 * 1000") 5 s
       button(@click.prevent="alarm.play()") Test alarme
 
@@ -39,7 +39,8 @@ export default {
       password: "",
       gameWon: undefined,
       counting: false,
-      alarm: undefined //new Audio(require('~/assets/alarm.ogg'))
+      alarmFile: require('~/assets/alarm.ogg'),
+      alarm: undefined
     }
   },
 
@@ -60,7 +61,17 @@ export default {
       })
       this.gameWon = undefined
       this.password = ""
+    },
+
+    countdownProgress (count) {
+      if (count.minutes == 27 && count.seconds == 0) {
+        this.alarm.play()
+      }
     }
+  },
+
+  mounted () {
+    this.alarm = new Audio(this.alarmFile)
   }
 }
 </script>
