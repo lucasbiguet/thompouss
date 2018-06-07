@@ -93,7 +93,8 @@ export default {
 }
 
 .main {
-  margin-top: 30vh;
+  background: url('~/assets/escapgame-ecran-univers.jpg') no-repeat center center fixed;
+  padding-top: 30vh;
 }
 
 section {
@@ -102,7 +103,7 @@ section {
 }
 
 .countdown {
-  font-size: 12em;
+  font-size: 10em;
   color: #d00;
 }
 
@@ -118,7 +119,7 @@ section {
   background: url('~/assets/escapgame-ecran-perdu.jpg') no-repeat center center fixed;
 }
 
-.game-won, .game-lost {
+.main, .game-won, .game-lost {
   width: 100%;
   height: 100vh;
   -webkit-background-size: cover;
