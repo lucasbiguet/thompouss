@@ -1,4 +1,5 @@
 module.exports = {
+  css: ['bulma'],
   /*
   ** Headers of the page
   */

@@ -1,16 +1,24 @@
 <template lang="pug">
-  section(class="container")
+  .game-container
     .main(v-if="gameWon == undefined")
-      .countdown
-        countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false" @countdownprogress="countdownProgress")
-          template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
+      img.logo(src="~/assets/logo.png")
 
-      form
-        label.label Mot de passe
-        input.input(v-model="password" :disabled="showError")
-        button.button(@click.prevent="validatePassword" :disabled="showError") Valider
+      .columns.has-text-centered
+        .column.is-12
+          countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false" @countdownprogress="countdownProgress")
+            .countdown.has-text-danger(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
-        .wrong-password(v-if="showError") Mauvais mot de passe
+      .columns
+        .column.is-4.is-offset-4
+          form
+            .field
+              label.label.is-large.has-text-centered Mot de passe
+              .control
+                input.input.is-medium(v-model="password" :disabled="showError")
+            .has-text-danger.has-text-centered(v-if="showError") Mauvais mot de passe
+            .field(v-else)
+              .control.has-text-centered
+                button.button.is-medium.is-danger(@click.prevent="validatePassword" :disabled="showError") Valider
 
     .game-lost(v-if="gameWon == false")
 
@@ -89,29 +97,35 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.has-text-danger
+  color: #d00 !important
+
 .debug
   position: fixed
   width: 100%
   bottom: 0
   background-color: grey
 
-.container
+.game-container
   height: 100%
 
 .main
   background: url('~/assets/escapgame-ecran-univers.jpg') no-repeat center center fixed
-  padding-top: 30vh
+
+  .logo
+    margin: 10px
 
 section
   text-align: center
   height: 100%
 
 .countdown
-  font-size: 10em
-  color: #d00
+  font-size: 12em
+  font-weight: 500
+  //color: #d00
 
 .wrong-password
-  color: #d00
+  //color: #d00
 
 .game-won
   background: url('~/assets/escapgame-ecran-gagne.jpg') no-repeat center center fixed
