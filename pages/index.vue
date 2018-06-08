@@ -24,7 +24,7 @@
 
     .game-won(v-if="gameWon == true")
 
-    .debug
+    .debug.has-text-centered
       label Mode administrateur:
       button(@click.prevent="$refs.countdown.pause" v-if="counting") Pause
       button(@click.prevent="$refs.countdown.start" v-else) Lancer
