@@ -6,9 +6,9 @@
           template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
       form
-        h2 Mot de passe
-        input(v-model="password" :disabled="showError")
-        button(@click.prevent="validatePassword" :disabled="showError") Valider
+        label.label Mot de passe
+        input.input(v-model="password" :disabled="showError")
+        button.button(@click.prevent="validatePassword" :disabled="showError") Valider
 
         .wrong-password(v-if="showError") Mauvais mot de passe
 
@@ -80,51 +80,42 @@ export default {
 }
 </script>
 
-<style scoped>
-.debug {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  background-color: grey;
-}
+<style lang="sass" scoped>
+.debug
+  position: fixed
+  width: 100%
+  bottom: 0
+  background-color: grey
 
-.container {
-  height: 100%;
-}
+.container
+  height: 100%
 
-.main {
-  background: url('~/assets/escapgame-ecran-univers.jpg') no-repeat center center fixed;
-  padding-top: 30vh;
-}
+.main
+  background: url('~/assets/escapgame-ecran-univers.jpg') no-repeat center center fixed
+  padding-top: 30vh
 
-section {
-  text-align: center;
-  height: 100%;
-}
+section
+  text-align: center
+  height: 100%
 
-.countdown {
-  font-size: 10em;
-  color: #d00;
-}
+.countdown
+  font-size: 10em
+  color: #d00
 
-.wrong-password {
-  color: #d00;
-}
+.wrong-password
+  color: #d00
 
-.game-won {
-  background: url('~/assets/escapgame-ecran-gagne.jpg') no-repeat center center fixed;
-}
+.game-won
+  background: url('~/assets/escapgame-ecran-gagne.jpg') no-repeat center center fixed
 
-.game-lost {
-  background: url('~/assets/escapgame-ecran-perdu.jpg') no-repeat center center fixed;
-}
+.game-lost
+  background: url('~/assets/escapgame-ecran-perdu.jpg') no-repeat center center fixed
 
-.main, .game-won, .game-lost {
-  width: 100%;
-  height: 100vh;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
+.main, .game-won, .game-lost
+  width: 100%
+  height: 100vh
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
 </style>

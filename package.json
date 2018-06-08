@@ -14,9 +14,12 @@
   },
   "dependencies": {
     "@xkeshi/vue-countdown": "^0.6.0",
+    "bulma": "^0.7.1",
     "file-loader": "^1.1.11",
+    "node-sass": "^4.9.0",
     "nuxt": "^1.0.0",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "sass-loader": "^7.0.3"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
