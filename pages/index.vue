@@ -23,7 +23,8 @@
       button(@click.prevent="reset") Réinitialiser jeu
       button(@click.prevent="time = 27.1 * 60 * 1000") 27 min 5 s
       button(@click.prevent="time = 5 * 1000") 5 s
-      button(@click.prevent="alarm.play()") Test alarme
+      button(@click.prevent="playAlarm") Test alarme
+      button(@click.prevent="playWinSound") Test son fin
 
 </template>
 
@@ -42,7 +43,7 @@ export default {
       gameWon: undefined,
       counting: false,
       alarmFile: require('~/assets/alarm.ogg'),
-      alarm: undefined,
+      winMusicFile: require('~/assets/win.mp3'),
       showError: false
     }
   },
@@ -52,6 +53,7 @@ export default {
       if (this.password == "missionhandicap") {
         this.$refs.countdown.pause()
         this.gameWon = true
+        this.playWinSound()
       } else {
         this.showError = true
         setTimeout( () => { this.showError = false }, 3000)
@@ -69,13 +71,19 @@ export default {
 
     countdownProgress (count) {
       if (count.minutes == 27 && count.seconds == 0) {
-        this.alarm.play()
+        this.playAlarm()
       }
-    }
-  },
+    },
 
-  mounted () {
-    this.alarm = new Audio(this.alarmFile)
+    playAlarm () {
+      let audio = new Audio(this.alarmFile)
+      audio.play()
+    },
+
+    playWinSound () {
+      let audio = new Audio(this.winMusicFile)
+      audio.play()
+    }
   }
 }
 </script>

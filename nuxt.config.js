@@ -35,7 +35,7 @@ module.exports = {
       }
 
       config.module.rules.push({
-        test: /\.ogg$/,
+        test: /\.(ogg|mp3)$/,
         loader: 'file-loader'
       })
     }
