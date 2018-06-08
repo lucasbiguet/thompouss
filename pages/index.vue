@@ -1,29 +1,38 @@
 <template lang="pug">
-  section(class="container")
+  .game-container
     .main(v-if="gameWon == undefined")
-      .countdown
-        countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false" @countdownprogress="countdownProgress")
-          template(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
+      img.logo(src="~/assets/logo.png")
 
-      form
-        h2 Mot de passe
-        input(v-model="password" :disabled="showError")
-        button(@click.prevent="validatePassword" :disabled="showError") Valider
+      .columns.has-text-centered
+        .column.is-12
+          countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false" @countdownprogress="countdownProgress")
+            .countdown.has-text-danger(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
-        .wrong-password(v-if="showError") Mauvais mot de passe
+      .columns
+        .column.is-4.is-offset-4
+          form
+            .field
+              label.label.is-large.has-text-centered Mot de passe
+              .control
+                input.input.is-medium(v-model="password" :disabled="showError")
+            .has-text-danger.has-text-centered(v-if="showError") Mauvais mot de passe
+            .field(v-else)
+              .control.has-text-centered
+                button.button.is-medium.is-danger(@click.prevent="validatePassword" :disabled="showError") Valider
 
     .game-lost(v-if="gameWon == false")
 
     .game-won(v-if="gameWon == true")
 
-    .debug
+    .debug.has-text-centered
       label Mode administrateur:
       button(@click.prevent="$refs.countdown.pause" v-if="counting") Pause
       button(@click.prevent="$refs.countdown.start" v-else) Lancer
       button(@click.prevent="reset") Réinitialiser jeu
       button(@click.prevent="time = 27.1 * 60 * 1000") 27 min 5 s
       button(@click.prevent="time = 5 * 1000") 5 s
-      button(@click.prevent="alarm.play()") Test alarme
+      button(@click.prevent="playAlarm") Test alarme
+      button(@click.prevent="playWinSound") Test son fin
 
 </template>
 
@@ -42,7 +51,7 @@ export default {
       gameWon: undefined,
       counting: false,
       alarmFile: require('~/assets/alarm.ogg'),
-      alarm: undefined,
+      winMusicFile: require('~/assets/win.mp3'),
       showError: false
     }
   },
@@ -52,6 +61,7 @@ export default {
       if (this.password == "missionhandicap") {
         this.$refs.countdown.pause()
         this.gameWon = true
+        this.playWinSound()
       } else {
         this.showError = true
         setTimeout( () => { this.showError = false }, 3000)
@@ -69,62 +79,65 @@ export default {
 
     countdownProgress (count) {
       if (count.minutes == 27 && count.seconds == 0) {
-        this.alarm.play()
+        this.playAlarm()
       }
-    }
-  },
+    },
 
-  mounted () {
-    this.alarm = new Audio(this.alarmFile)
+    playAlarm () {
+      let audio = new Audio(this.alarmFile)
+      audio.play()
+    },
+
+    playWinSound () {
+      let audio = new Audio(this.winMusicFile)
+      audio.play()
+    }
   }
 }
 </script>
 
-<style scoped>
-.debug {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  background-color: grey;
-}
+<style lang="sass" scoped>
+.has-text-danger
+  color: #d00 !important
 
-.container {
-  height: 100%;
-}
+.debug
+  position: fixed
+  width: 100%
+  bottom: 0
+  background-color: grey
 
-.main {
-  background: url('~/assets/escapgame-ecran-univers.jpg') no-repeat center center fixed;
-  padding-top: 30vh;
-}
+.game-container
+  height: 100%
 
-section {
-  text-align: center;
-  height: 100%;
-}
+.main
+  background: url('~/assets/escapgame-ecran-univers.jpg') no-repeat center center fixed
 
-.countdown {
-  font-size: 10em;
-  color: #d00;
-}
+  .logo
+    margin: 10px
 
-.wrong-password {
-  color: #d00;
-}
+section
+  text-align: center
+  height: 100%
 
-.game-won {
-  background: url('~/assets/escapgame-ecran-gagne.jpg') no-repeat center center fixed;
-}
+.countdown
+  font-size: 12em
+  font-weight: 500
+  //color: #d00
 
-.game-lost {
-  background: url('~/assets/escapgame-ecran-perdu.jpg') no-repeat center center fixed;
-}
+.wrong-password
+  //color: #d00
 
-.main, .game-won, .game-lost {
-  width: 100%;
-  height: 100vh;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}
+.game-won
+  background: url('~/assets/escapgame-ecran-gagne.jpg') no-repeat center center fixed
+
+.game-lost
+  background: url('~/assets/escapgame-ecran-perdu.jpg') no-repeat center center fixed
+
+.main, .game-won, .game-lost
+  width: 100%
+  height: 100vh
+  -webkit-background-size: cover
+  -moz-background-size: cover
+  -o-background-size: cover
+  background-size: cover
 </style>
