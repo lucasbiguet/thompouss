@@ -12,9 +12,9 @@
         .column.is-4.is-offset-4
           form
             .field
-              label.label.is-large.has-text-centered Mot de passe
+              label.label.is-large.has-text-centered.has-text-danger Mot de passe
               .control
-                input.input.is-medium(v-model="password" :disabled="showError")
+                input.input.is-medium.is-danger(v-model="password" :disabled="showError")
             .has-text-danger.has-text-centered(v-if="showError") Mauvais mot de passe
             .field(v-else)
               .control.has-text-centered
