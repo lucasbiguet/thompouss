@@ -5,7 +5,7 @@
 
       .columns.has-text-centered
         .column.is-12
-          countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameWon = false" @countdownprogress="countdownProgress")
+          countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameOver" @countdownprogress="countdownProgress")
             .countdown.has-text-danger(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
       .columns
@@ -32,7 +32,7 @@
       button(@click.prevent="time = 27.1 * 60 * 1000") 27 min 5 s
       button(@click.prevent="time = 5 * 1000") 5 s
       button(@click.prevent="playAlarm") Test alarme
-      button(@click.prevent="playWinSound") Test son fin
+      button(@click.prevent="playGameOverSound") Test son fin
 
 </template>
 
@@ -51,7 +51,7 @@ export default {
       gameWon: undefined,
       counting: false,
       alarmFile: require('~/assets/alarm.ogg'),
-      winMusicFile: require('~/assets/win.mp3'),
+      gameOverMusicFile: require('~/assets/game-over.mp3'),
       showError: false
     }
   },
@@ -61,11 +61,15 @@ export default {
       if (this.password == "missionhandicap") {
         this.$refs.countdown.pause()
         this.gameWon = true
-        this.playWinSound()
       } else {
         this.showError = true
         setTimeout( () => { this.showError = false }, 3000)
       }
+    },
+
+    gameOver () {
+      this.gameWon = false
+      this.playGameOverSound()
     },
 
     reset () {
@@ -88,8 +92,8 @@ export default {
       audio.play()
     },
 
-    playWinSound () {
-      let audio = new Audio(this.winMusicFile)
+    playGameOverSound () {
+      let audio = new Audio(this.gameOverMusicFile)
       audio.play()
     }
   }
