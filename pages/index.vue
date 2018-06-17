@@ -5,7 +5,7 @@
 
       .columns.has-text-centered
         .column.is-12
-          countdown(ref="countdown" :time="time" v-if="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameOver" @countdownprogress="countdownProgress")
+          countdown(ref="countdown" :time="time" @countdownstart="counting = true" @countdownpause="counting = false" @countdownend="gameOver" @countdownprogress="countdownProgress")
             .countdown.has-text-danger(slot-scope="props") {{ props.minutes }}:{{ props.seconds }}
 
       .columns
@@ -24,15 +24,16 @@
 
     .game-won(v-if="gameWon == true")
 
-    .debug.has-text-centered
-      label Mode administrateur:
-      button(@click.prevent="$refs.countdown.pause" v-if="counting") Pause
-      button(@click.prevent="$refs.countdown.start" v-else) Lancer
-      button(@click.prevent="reset") Réinitialiser jeu
-      button(@click.prevent="time = 27.1 * 60 * 1000") 27 min 5 s
-      button(@click.prevent="time = 5 * 1000") 5 s
-      button(@click.prevent="playAlarm") Test alarme
-      button(@click.prevent="playGameOverSound") Test son fin
+    .debug(v-if="admin")
+      h4.has-text-white Mode administrateur
+      button.button.is-small(@click.prevent="$refs.countdown.pause" v-if="counting") Pause
+      button.button.is-small(@click.prevent="$refs.countdown.start" v-else) Lancer
+      button.button.is-small(@click.prevent="reset") Réinitialiser jeu
+      button.button.is-small(@click.prevent="time = 27.1 * 60 * 1000") 27 min 5 s
+      button.button.is-small(@click.prevent="time = 5 * 1000") 5 s
+      button.button.is-small(@click.prevent="playAlarm") Test alarme
+      button.button.is-small(@click.prevent="playGameOverSound") Test son fin
+      button.button.is-small.is-success.is-pulled-right(@click.prevent="startGame") Fermer et commencer le jeu
 
 </template>
 
@@ -52,7 +53,8 @@ export default {
       counting: false,
       alarmFile: require('~/assets/alarm.ogg'),
       gameOverMusicFile: require('~/assets/game-over.mp3'),
-      showError: false
+      showError: false,
+      admin: true
     }
   },
 
@@ -95,6 +97,11 @@ export default {
     playGameOverSound () {
       let audio = new Audio(this.gameOverMusicFile)
       audio.play()
+    },
+
+    startGame () {
+      this.reset()
+      this.admin = false
     }
   }
 }
@@ -109,6 +116,13 @@ export default {
   width: 100%
   bottom: 0
   background-color: grey
+  padding: 5px 10px;
+
+  button, h4
+    margin-right: 5px
+
+  h4
+    display: inline
 
 .game-container
   height: 100%
